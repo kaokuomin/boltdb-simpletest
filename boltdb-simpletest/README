@@ -1,0 +1,94 @@
+这是一个简单测试boltdb的工程。
+执行步骤：
+go get github.com/boltdb/bolt
+go run main.go
+
+数据库的 CURD 操作：对数据库的 CURD 实现，即创建（Create）、更新（Update）、读取（Retrieve）和删除（Delete）操作，具体步骤如下
+    1、打开数据库
+    2、获取一个事务 tx
+    3、根据 tx 获取bucket b
+    4、进行更新——b.Put(key, data)
+    5、进行查询——b.Get(key)
+
+main.go中包含4种方法：
+	creatdb()	--创建数据库
+	writeData()	--写入数据
+	readData()	--读数据
+	deleteData()	--删除数据
+
+*不知道为什么，删除数据时得执行两次删除命令才能删完全
+
+
+// func main() {
+// 	// 创建一个数据库文件
+// 	db, err := bolt.Open("my.db", 0600, nil)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	defer db.Close()
+
+// 	// 开启一个事务
+// 	// err = db.Update(func(tx *bolt.Tx) error {
+// 	// 	// 创建一个名为 "bucket1" 的 bucket
+// 	// 	b, err := tx.CreateBucketIfNotExists([]byte("bucket1"))
+// 	// 	if err != nil {
+// 	// 		return err
+// 	// 	}
+
+// 	// 	// 向 bucket 中添加键值对
+// 	// 	count := 20
+
+// 	// 	for i := 0; i < count; i++ {
+// 	// 		keyWithInt := []byte(fmt.Sprintf("%s%d", "key", i))
+// 	// 		valueWithInt := []byte(fmt.Sprintf("%s%d", "value", i))
+// 	// 		err = b.Put(keyWithInt, valueWithInt)
+// 	// 		if err != nil {
+// 	// 			return err
+// 	// 		} else {
+// 	// 			// fmt.Println("写入成功")
+// 	// 		}
+// 	// 	}
+
+// 	// 	return nil
+// 	// })
+
+// 	// 删除bucket中的一些键值对
+// 	err = db.Update(func(tx *bolt.Tx) error {
+// 		// 获取名为 "messages" 的 bucket
+// 		b := tx.Bucket([]byte("bucket1"))
+
+// 		// 遍历 bucket 中的所有键值对
+// 		return b.ForEach(func(k, v []byte) error {
+// 			// 删除当前键值对
+// 			return b.Delete(k)
+// 		})
+
+// 	})
+// 	fmt.Println("Delete success")
+// 	// 读取键值对
+// 	// err = db.View(func(tx *bolt.Tx) error {
+// 	// 	b := tx.Bucket([]byte("bucket1"))
+// 	// 	if b == nil {
+// 	// 		return fmt.Errorf("bucket not found")
+// 	// 	}
+
+// 	// 	// 读取键 "key1" 对应的值
+// 	// 	return b.ForEach(func(k, v []byte) error {
+// 	// 		v = b.Get(k)
+// 	// 		if v == nil {
+// 	// 			return fmt.Errorf("key not found")
+// 	// 		}
+// 	// 		log.Printf("%s: %s\n", k, v)
+
+// 	// 		return nil
+// 	// 	})
+// 	// 	// v := b.Get([]byte("key1"))
+// 	// 	// if v == nil {
+// 	// 	// 	return fmt.Errorf("key not found")
+// 	// 	// }
+// 	// })
+
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// }
